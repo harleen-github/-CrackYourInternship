@@ -1,0 +1,81 @@
+class Solution {
+public:
+int rec(vector<int>& prices,bool buy,int ind, vector<vector<int>>&dp)
+{
+    if(ind==prices.size())return 0;
+     long profit=0;
+     if(dp[ind][buy]!=-1)return dp[ind][buy];
+    if(buy)
+    {
+        int take= -prices[ind]+rec(prices,!buy,ind+1,dp);
+        int nottake= rec(prices,buy,ind+1,dp);
+        profit= max(take,nottake);
+    }
+    else{
+          int take=prices[ind]+rec(prices,!buy,ind+1,dp);
+          int nottake=rec(prices,buy,ind+1,dp);
+          profit=max(take,nottake);
+    }
+    return dp[ind][buy]=profit;
+}
+int tab(vector<int>& prices)
+{
+    int n=prices.size();
+     vector<vector<int>>dp(n+1,vector<int>(2,0));
+  long profit=0;
+     for(int ind=n-1;ind>=0;ind--)
+     {
+        for(int buy=0;buy<=1;buy++)
+        {
+            if(buy)
+           {
+             int take= -prices[ind]+dp[ind+1][!buy];
+            int nottake= dp[ind+1][buy];
+            profit= max(take,nottake);
+            }
+             else{
+                int take=prices[ind]+dp[ind+1][!buy];
+                int nottake=dp[ind+1][buy];
+                profit=max(take,nottake);
+            }
+            dp[ind][buy]=profit;
+        }
+     }
+     return dp[0][1];
+}
+int SO(vector<int>prices)
+{
+    int n=prices.size();
+     vector<int>curr(2,0),next(2,0);
+     next[0]=0,next[1]=0;
+     long profit=0;
+     for(int ind=n-1;ind>=0;ind--)
+     {
+        for(int buy=0;buy<=1;buy++)
+        {    
+            if(buy)
+           {
+             int take= -prices[ind]+next[!buy];
+            int nottake= next[buy];
+            profit= max(take,nottake);
+            }
+             else{
+                int take=prices[ind]+next[!buy];
+                int nottake=next[buy];
+                profit=max(take,nottake);
+            }
+           curr[buy]=profit;
+           next=curr;
+        }
+     }
+     return curr[1];
+
+}
+    int maxProfit(vector<int>& prices) {
+        int n =prices.size();
+        vector<vector<int>>dp(n,vector<int>(2,-1));
+        //return rec(prices,true,0,dp);
+        //return tab(prices);
+        return SO(prices);
+    }
+};
