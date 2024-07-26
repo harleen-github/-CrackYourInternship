@@ -1,0 +1,24 @@
+class Solution {
+public:
+    void permuteUnique(vector<int>& nums, int start, set<vector<int>>& ans) {
+        if (start == nums.size() - 1) {
+            ans.insert(nums);
+            return;
+        }
+
+        for (int i = start; i < nums.size(); ++i) {
+            swap(nums[start], nums[i]);
+            permuteUnique(nums, start + 1, ans);
+            swap(nums[start], nums[i]);  // backtrack
+        }
+    }
+
+    vector<vector<int>> uniquePerms(vector<int> &arr ,int n) {
+        set<vector<int>> ans;
+        permuteUnique(arr, 0, ans);
+
+        // Convert set to vector
+        vector<vector<int>> result(ans.begin(), ans.end());
+        return result;
+    }
+};
