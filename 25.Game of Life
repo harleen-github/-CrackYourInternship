@@ -1,0 +1,48 @@
+class Solution {
+public:
+    void gameOfLife(vector<vector<int>>& board) {
+        int dx[8] = {-1, -1, 0, 1, 1, 1, 0, -1};
+        int dy[8] = {0, 1, 1, 1, 0, -1, -1, -1};
+
+        int m = board.size();
+        int n = board[0].size();
+
+        // Using these values to represent transitional states:
+        // 2: 1 -> 0 (live to dead)
+        // 3: 0 -> 1 (dead to live)
+
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                int liveNeighbors = 0;
+                for(int k = 0; k < 8; k++) {
+                    int newx = i + dx[k];
+                    int newy = j + dy[k];
+                    if(newx >= 0 && newx < m && newy >= 0 && newy < n && 
+                       (board[newx][newy] == 1 || board[newx][newy] == 2)) {
+                        liveNeighbors++;
+                    }
+                }
+
+                if(board[i][j] == 1) {
+                    if(liveNeighbors < 2 || liveNeighbors > 3) {
+                        board[i][j] = 2; // Mark as live to dead
+                    }
+                } else {
+                    if(liveNeighbors == 3) {
+                        board[i][j] = 3; // Mark as dead to live
+                    }
+                }
+            }
+        }
+
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(board[i][j] == 2) {
+                    board[i][j] = 0; // Live to dead
+                } else if(board[i][j] == 3) {
+                    board[i][j] = 1; // Dead to live
+                }
+            }
+        }
+    }
+};
