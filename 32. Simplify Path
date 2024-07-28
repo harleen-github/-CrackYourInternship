@@ -1,0 +1,25 @@
+class Solution {
+public:
+    string simplifyPath(string path) {
+        stringstream ss(path);
+        stack<string> st;
+        string token;
+        while (getline(ss, token, '/')) {
+            if (token == "" || token == ".") continue; // Ignore empty and current directory tokens
+            if (token == "..") {
+                if (!st.empty()) st.pop(); // Move up one directory if possible
+            } else {
+                st.push(token); // Push valid directory/file names onto the stack
+            }
+        }
+        
+        // Construct the simplified canonical path
+        string ans = "";
+        while (!st.empty()) {
+            ans = "/" + st.top() + ans; // Append each directory/file from the stack to the result
+            st.pop();
+        }
+        
+        return ans.empty() ? "/" : ans; // Return root directory if result is empty
+    }
+};
