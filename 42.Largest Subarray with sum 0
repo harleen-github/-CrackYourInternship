@@ -1,0 +1,25 @@
+class Solution {
+  public:
+    int maxLen(vector<int>& arr, int n) {
+        // Your code here
+        
+        int i=0,j=0;int sum=0;int maxlen=0;
+        unordered_map<int,int>mp;
+        mp[0]=-1;
+        while(j<n)
+        {
+            sum+=arr[j];
+             
+             if(mp.find(sum)!=mp.end())
+             {
+                 maxlen=max(maxlen,j-mp[sum]);
+             }
+             else
+             mp[sum]=j;
+             
+             j++;
+            
+        }
+        return maxlen;
+    }
+};
