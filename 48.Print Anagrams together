@@ -1,0 +1,33 @@
+#include <vector>
+#include <unordered_map>
+#include <list>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+class Solution{
+public:
+    vector<vector<string>> Anagrams(vector<string>& string_list) {
+        unordered_map<string, list<string>> mp;
+        int n = string_list.size();
+        
+        // Group words by sorted characters
+        for (int i = 0; i < n; i++) {
+            string word = string_list[i];
+            sort(word.begin(), word.end());
+            mp[word].push_back(string_list[i]);
+        }
+        
+        vector<vector<string>> ans;
+        
+        // Convert the map to the desired output format
+        for (auto t : mp) {
+            vector<string> temp;
+            for (auto k : t.second)
+                temp.push_back(k);
+            ans.push_back(temp);
+        }
+        
+        return ans;
+    }
+};
